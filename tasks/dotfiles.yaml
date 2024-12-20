@@ -1,0 +1,11 @@
+---
+- name: Install chezmoi
+  ansible.builtin.dnf:
+    name: "https://github.com/twpayne/chezmoi/releases/download/v{{vars.chezmoi.version}}/chezmoi-{{vars.chezmoi.version}}-x86_64.rpm"
+    state: present
+  become: true
+
+- name: Initialize Chezmoi
+  ansible.builtin.command:
+    cmd: "chezmoi init --apply git@github.com:alau/dotfiles.git"
+    creates: "{{ansible_env.HOME}}/.local/share/chezmoi"

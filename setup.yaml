@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+
+  vars_files:
+    - vars/common.yaml
+
+  tasks:
+    - name: Set up dotfiles
+      ansible.builtin.include_tasks: tasks/dotfiles.yaml
