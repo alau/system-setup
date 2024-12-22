@@ -8,6 +8,9 @@
     - name: Set up packages
       ansible.builtin.include_tasks: tasks/packages.yaml
 
+    - name: Set up auto updates
+      ansible.builtin.include_tasks: tasks/auto-updates.yaml
+
     - name: Set up dotfiles
       ansible.builtin.include_tasks: tasks/dotfiles.yaml
 
