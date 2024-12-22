@@ -1,0 +1,66 @@
+---
+- name: Install packages
+  become: true
+  ansible.builtin.dnf:
+    name:
+      # Window management
+      - autorandr
+      - awesome
+      - xrandr
+      - xscreensaver
+      # Terminal
+      - alacritty
+      - ncurses-term
+      - numlockx
+      - tmux
+      - xclip
+      - zsh
+      # Tools
+      - chromium
+      - gh
+      - gron
+      - htop
+      - httpie
+      - jq
+      - keepassxc
+      - neovim
+      - ripgrep
+      - shutter
+      - system-config-printer
+      - vim
+      - zoxide
+      # Misc
+      - dnf-automatic
+      - findutils
+      - liquidctl
+      - lm_sensors
+      - redshift
+      - xbacklight
+      # General build libs
+      - bzip2
+      - bzip2-devel
+      - gcc
+      - gcc-c++
+      - libffi-devel
+      - openssl-devel
+      - readline-devel
+      - sqlite
+      - sqlite-devel
+      - xz
+      - xz-devel
+      - zlib-devel
+      # Languages
+      - golang
+      - luarocks
+      - nodejs
+      - python3-gpg
+      - python3-ipython
+      - virtualenv
+      - yarnpkg
+    state: latest
+
+- name: Update all packages to their latest version
+  become: true
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
