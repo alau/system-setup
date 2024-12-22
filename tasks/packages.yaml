@@ -1,5 +1,5 @@
 ---
-- name: Install packages
+- name: Install dnf packages
   become: true
   ansible.builtin.dnf:
     name:
@@ -59,8 +59,16 @@
       - yarnpkg
     state: latest
 
-- name: Update all packages to their latest version
+- name: Update all dnf packages to their latest version
   become: true
   ansible.builtin.dnf:
     name: "*"
     state: latest
+
+- name: Install pip packages
+  become: true
+  ansible.builtin.pip:
+    name:
+      - neovim
+      - ipython
+      - pdbpp
