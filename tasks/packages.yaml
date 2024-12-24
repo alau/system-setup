@@ -30,7 +30,6 @@
       - vim
       - zoxide
       # Misc
-      - dnf-automatic
       - findutils
       - liquidctl
       - lm_sensors
