@@ -3,6 +3,7 @@
   ansible.builtin.dnf:
     name: "https://github.com/twpayne/chezmoi/releases/download/v{{vars.chezmoi.version}}/chezmoi-{{vars.chezmoi.version}}-x86_64.rpm"
     state: present
+    disable_gpg_check: yes
   become: true
 
 - name: Initialize Chezmoi
