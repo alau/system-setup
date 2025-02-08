@@ -1,0 +1,6 @@
+---
+- name: Remove rule that prevents automount for ext devices
+  become: true
+  ansible.builtin.file:
+    path: /usr/lib/udev/rules.d/64-ext4.rules
+    state: absent
