@@ -16,3 +16,6 @@
 
     - name: Allow ext automount
       ansible.builtin.include_tasks: tasks/automount.yaml
+
+    - name: Configure audio
+      ansible.builtin.include_tasks: tasks/audio.yaml

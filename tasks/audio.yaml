@@ -1,0 +1,8 @@
+- name: Increase priority of headset microphone
+  become: true
+  ansible.builtin.replace:
+    path: /usr/share/alsa-card-profile/mixer/paths/analog-input-headset-mic.conf
+    regexp: '^(\s*)priority\s*=\s*\d+$'
+    replace: '\1priority = 90'
+    after: '\[General\]'
+    before: '\[Jack Headset Mic\]'
