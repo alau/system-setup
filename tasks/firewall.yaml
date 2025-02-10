@@ -1,0 +1,28 @@
+- name: Set default zone
+  ansible.builtin.command:
+    cmd: firewall-cmd --set-default-zone=drop
+  changed_when: false
+
+- name: Enable dhcpv6-client
+  ansible.posix.firewalld:
+    service: dhcpv6-client
+    permanent: yes
+    immediate: yes
+    state: enabled
+
+- name: Disable other services
+  ansible.posix.firewalld:
+    service: "{{ item }}"
+    permanent: yes
+    immediate: yes
+    state: disabled
+  with_items:
+    - ssh
+    - samba-client
+    - mdns
+
+- name: Reload firewalld
+  become: true
+  ansible.builtin.service:
+    name: firewalld
+    state: reloaded

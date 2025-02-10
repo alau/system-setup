@@ -11,6 +11,9 @@
     - name: Set up auto updates
       ansible.builtin.include_tasks: tasks/auto-updates.yaml
 
+    - name: Configure firewall
+      ansible.builtin.include_tasks: tasks/firewall.yaml
+
     - name: Set up dotfiles
       ansible.builtin.include_tasks: tasks/dotfiles.yaml
 
