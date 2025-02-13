@@ -68,6 +68,22 @@
   become: true
   ansible.builtin.pip:
     name:
-      - neovim
       - ipython
       - pdbpp
+    state: latest
+
+- name: Create virtualenv for neovim
+  ansible.builtin.pip:
+    virtualenv: "{{ ansible_env.HOME }}/.virtualenvs/neovim"
+    virtualenv_command: /usr/bin/virtualenv
+    name:
+      - neovim
+      # For molten-nvim
+      - pynvim
+      - jupyter_client
+      - cairosvg
+      - plotly
+      - kaleido
+      - pyperclip
+      - pillow
+    state: latest
