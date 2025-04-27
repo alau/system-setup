@@ -28,6 +28,7 @@
       - shutter
       - system-config-printer
       - vim
+      - yp-tools
       - zoxide
       # Misc
       - findutils
