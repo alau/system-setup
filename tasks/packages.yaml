@@ -27,6 +27,7 @@
       - ripgrep
       - shutter
       - system-config-printer
+      - uv
       - vim
       - yp-tools
       - zoxide
