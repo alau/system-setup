@@ -48,6 +48,7 @@
       - readline-devel
       - sqlite
       - sqlite-devel
+      - tk-devel
       - xz
       - xz-devel
       - zlib-devel
