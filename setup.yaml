@@ -22,3 +22,6 @@
 
     - name: Configure audio
       ansible.builtin.include_tasks: tasks/audio.yaml
+
+    - name: Set up swapfile for hibernation
+      ansible.builtin.include_tasks: tasks/hibernation.yaml

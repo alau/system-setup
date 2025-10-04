@@ -1,0 +1,68 @@
+---
+- name: Configure swapfile if not already active
+  block:
+    - name: Ensure swap directory exists
+      become: true
+      file:
+        path: /var/swap
+        state: directory
+        mode: '0755'
+
+    - name: Create swapfile if it does not exist
+      become: true
+      command: fallocate -l {{ (ansible_memtotal_mb // 1024) + 8 }}G /var/swap/swapfile
+      args:
+        creates: /var/swap/swapfile
+
+    - name: Set correct ownership and permissions on swapfile
+      become: true
+      file:
+        path: /var/swap/swapfile
+        owner: root
+        group: root
+        mode: '0600'
+
+    - name: Make the swap area
+      become: true
+      command: mkswap /var/swap/swapfile
+      register: mkswap_out
+      changed_when: "'setting up swapspace' in mkswap_out.stdout"
+
+    - name: Get UUID of the filesystem containing the swapfile
+      command: findmnt -no UUID -T /var/swap/swapfile
+      register: swap_uuid
+      changed_when: false
+
+    - name: Add swapfile entry to /etc/fstab (low priority)
+      become: true
+      mount:
+        name: none
+        src: /var/swap/swapfile
+        fstype: swap
+        opts: defaults,pri=0
+        state: present
+
+    - name: Determine swapfile offset (for resume)
+      become: true
+      command: btrfs inspect-internal map-swapfile -r /var/swap/swapfile
+      register: resume_offset
+      changed_when: false
+
+    - name: Update kernel parameters for hibernation
+      become: true
+      command: >
+        grubby --args="resume=UUID={{ swap_uuid.stdout }} resume_offset={{ resume_offset.stdout }}" --update-kernel=ALL
+
+    - name: Add SELinux context rule for swapfile
+      become: true
+      shell: |
+        semanage fcontext -a -t swapfile_t '/var/swap(/.*)?' || true
+        restorecon -RF /var/swap
+
+    - name: Ensure swapfile is active
+      command: swapon /var/swap/swapfile
+      register: swapon_out
+      failed_when: swapon_out.rc != 0 and 'already in use' not in swapon_out.stderr
+      changed_when: "'already in use' not in swapon_out.stderr"
+
+  when: "'/var/swap/swapfile' not in lookup('pipe','swapon --show=NAME')"
