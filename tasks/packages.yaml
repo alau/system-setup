@@ -6,6 +6,7 @@
       # Window management
       - autorandr
       - awesome
+      - lightdm
       - xrandr
       - xscreensaver
       # Terminal
@@ -60,6 +61,20 @@
       - virtualenv
       - yarnpkg
     state: latest
+
+- name: Ensure LightDM service is enabled and started
+  become: true
+  ansible.builtin.systemd:
+    name: lightdm.service
+    enabled: true
+    state: started
+
+- name: Ensure GDM service is disabled and stopped
+  become: true
+  ansible.builtin.systemd:
+    name: gdm.service
+    enabled: false
+    state: stopped
 
 - name: Update all dnf packages to their latest version
   become: true
