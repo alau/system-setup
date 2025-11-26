@@ -1,32 +1,17 @@
 ---
 - name: Configure swapfile if not already active
   block:
-    - name: Ensure swap directory exists
+    - name: Ensure btrfs subvolume exists
       become: true
-      file:
-        path: /var/swap
-        state: directory
-        mode: '0755'
+      command: "btrfs subvolume create /var/swap"
+      args:
+        creates: /var/swap
 
-    - name: Create swapfile if it does not exist
+    - name: Create swapfile via btrfs mkswapfile
       become: true
-      command: fallocate -l {{ (ansible_memtotal_mb // 1024) + 8 }}G /var/swap/swapfile
+      command: "btrfs filesystem mkswapfile --size {{ (ansible_memtotal_mb // 1024) + 8 }}G --uuid clear /var/swap/swapfile"
       args:
         creates: /var/swap/swapfile
-
-    - name: Set correct ownership and permissions on swapfile
-      become: true
-      file:
-        path: /var/swap/swapfile
-        owner: root
-        group: root
-        mode: '0600'
-
-    - name: Make the swap area
-      become: true
-      command: mkswap /var/swap/swapfile
-      register: mkswap_out
-      changed_when: "'setting up swapspace' in mkswap_out.stdout"
 
     - name: Get UUID of the filesystem containing the swapfile
       command: findmnt -no UUID -T /var/swap/swapfile
@@ -60,6 +45,7 @@
         restorecon -RF /var/swap
 
     - name: Ensure swapfile is active
+      become: true
       command: swapon /var/swap/swapfile
       register: swapon_out
       failed_when: swapon_out.rc != 0 and 'already in use' not in swapon_out.stderr
