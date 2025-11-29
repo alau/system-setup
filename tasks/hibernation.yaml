@@ -44,6 +44,58 @@
         semanage fcontext -a -t swapfile_t '/var/swap(/.*)?' || true
         restorecon -RF /var/swap
 
+    - name: Ensure SELinux policy directory exists
+      become: true
+      file:
+        path: /usr/local/share/selinux/custom
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Copy systemd_hibernate .te file
+      become: true
+      copy:
+        src: files/systemd_hibernate.te
+        dest: /usr/local/share/selinux/custom/systemd_hibernate.te
+        mode: '0644'
+
+    - name: Compile systemd_hibernate
+      become: true
+      command: >
+        checkmodule -M -m
+        -o /usr/local/share/selinux/custom/systemd_hibernate.mod
+        /usr/local/share/selinux/custom/systemd_hibernate.te
+      args:
+        creates: /usr/local/share/selinux/custom/systemd_hibernate.mod
+
+    - name: Package systemd_hibernate
+      become: true
+      command: >
+        semodule_package
+        -o /usr/local/share/selinux/custom/systemd_hibernate.pp
+        -m /usr/local/share/selinux/custom/systemd_hibernate.mod
+      args:
+        creates: /usr/local/share/selinux/custom/systemd_hibernate.pp
+
+    - name: Load SELinux policy systemd_hibernate
+      become: true
+      command: semodule -i /usr/local/share/selinux/custom/systemd_hibernate.pp
+
+    - name: Ensure dracut resume config exists
+      become: true
+      copy:
+        dest: /etc/dracut.conf.d/resume.conf
+        content: |
+          add_dracutmodules+=" resume "
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Rebuild initramfs via dracut
+      become: true
+      command: dracut -f
+
     - name: Ensure swapfile is active
       become: true
       command: swapon /var/swap/swapfile
