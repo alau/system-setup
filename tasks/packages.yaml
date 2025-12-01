@@ -18,6 +18,7 @@
       - zsh
       # Tools
       - chromium
+      - evince
       - gh
       - htop
       - httpie
