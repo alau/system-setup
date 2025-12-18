@@ -10,10 +10,8 @@
       - xrandr
       - xscreensaver
       # Terminal
-      - alacritty
-      - ncurses-term
+      - kitty
       - numlockx
-      - tmux
       - xclip
       - zsh
       # Tools
