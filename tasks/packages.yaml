@@ -61,19 +61,14 @@
       - yarnpkg
     state: latest
 
-- name: Ensure LightDM service is enabled and started
+- name: Switch from GDM to LightDM
   become: true
-  ansible.builtin.systemd:
-    name: lightdm.service
-    enabled: true
-    state: started
-
-- name: Ensure GDM service is disabled and stopped
-  become: true
-  ansible.builtin.systemd:
-    name: gdm.service
-    enabled: false
-    state: stopped
+  ansible.builtin.shell: |
+    systemctl disable gdm.service
+    systemctl enable lightdm.service
+  args:
+    creates: /etc/systemd/system/display-manager.service
+  failed_when: false
 
 - name: Update all dnf packages to their latest version
   become: true
