@@ -18,6 +18,7 @@
       - chromium
       - evince
       - gh
+      - git-lfs
       - htop
       - httpie
       - jq
