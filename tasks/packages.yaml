@@ -17,6 +17,7 @@
       # Tools
       - chromium
       - evince
+      - fd-find
       - gh
       - git-lfs
       - htop
