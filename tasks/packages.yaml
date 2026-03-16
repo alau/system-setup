@@ -15,6 +15,7 @@
       - xclip
       - zsh
       # Tools
+      - bubblewrap
       - chromium
       - evince
       - fd-find
@@ -27,6 +28,7 @@
       - neovim
       - ripgrep
       - shutter
+      - socat
       - system-config-printer
       - uv
       - vim
