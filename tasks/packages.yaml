@@ -25,6 +25,7 @@
       - httpie
       - jq
       - keepassxc
+      - ncdu
       - neovim
       - ripgrep
       - shutter
