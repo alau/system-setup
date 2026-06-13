@@ -9,4 +9,5 @@ Set up github ssh key access
 ```zsh
 sudo dnf install ansible
 ansible-playbook --ask-become-pass setup.yaml
+chezmoi init --apply git@github.com:alau/dotfiles.git
 ```

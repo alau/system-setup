@@ -5,8 +5,3 @@
     state: present
     disable_gpg_check: yes
   become: true
-
-- name: Initialize Chezmoi
-  ansible.builtin.command:
-    cmd: "chezmoi init --apply git@github.com:alau/dotfiles.git"
-    creates: "{{ansible_env.HOME}}/.local/share/chezmoi"
