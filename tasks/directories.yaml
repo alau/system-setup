@@ -1,0 +1,13 @@
+---
+- name: Remove Fedora default directories
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/{{ item }}"
+    state: absent
+  loop: "{{ fedora_default_dirs }}"
+
+- name: Ensure desired directories exist
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/{{ item }}"
+    state: directory
+    mode: "0755"
+  loop: "{{ desired_dirs }}"

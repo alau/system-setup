@@ -5,14 +5,17 @@
     - vars/common.yaml
 
   tasks:
+    - name: Configure firewall
+      ansible.builtin.include_tasks: tasks/firewall.yaml
+
+    - name: Set up home directory structure
+      ansible.builtin.include_tasks: tasks/directories.yaml
+
     - name: Set up packages
       ansible.builtin.include_tasks: tasks/packages.yaml
 
     - name: Set up auto updates
       ansible.builtin.include_tasks: tasks/auto-updates.yaml
-
-    - name: Configure firewall
-      ansible.builtin.include_tasks: tasks/firewall.yaml
 
     - name: Set up dotfiles
       ansible.builtin.include_tasks: tasks/dotfiles.yaml

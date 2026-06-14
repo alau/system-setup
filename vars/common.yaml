@@ -1,3 +1,19 @@
 ---
 chezmoi:
   version: 2.56.0
+
+fedora_default_dirs:
+  - Desktop
+  - Documents
+  - Downloads
+  - Music
+  - Pictures
+  - Public
+  - Templates
+  - Videos
+
+desired_dirs:
+  - bin
+  - downloads
+  - repos
+  - screenshots
