@@ -15,6 +15,7 @@
       - xclip
       - zsh
       # Tools
+      - btop
       - bubblewrap
       - chromium
       - evince
